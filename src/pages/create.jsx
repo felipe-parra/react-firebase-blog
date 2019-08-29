@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Redirect } from 'react-router-dom';
 import { getFirebase } from '../firebase';
 
 const labelStyles = {
@@ -25,7 +25,10 @@ const Create = () => {
 	const [ content, setContent ] = useState('');
 
 	const createPost = () => {
-		console.log({ title, slug, coverImage, coverImageAlt, content });
+		// console.log({ title, slug, coverImage, coverImageAlt, content });
+		const date = generateDate();
+		const newPost = { title, date, slug, coverImage, coverImageAlt, content };
+		getFirebase().database().ref().child(`posts/${slug}`).set(newPost).then(() => <Redirect to="/" push />);
 	};
 	const generateDate = () => {
 		const now = new Date();
